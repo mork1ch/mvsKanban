@@ -29,7 +29,6 @@
 					echo $title;
 				?>
 			</div>
-            <!-- <div class="right"><a href="/user/login">Войти</a></div> -->
 			<?
 				if(empty($_SESSION['login'])){
 					echo "<div class=\"right\"><a href=\"/user/login\">Вход</a></div>";

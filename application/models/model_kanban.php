@@ -9,7 +9,7 @@ class Model_User extends Model
         
 	    $mysqli = $this->sql_connect();
 
-        $count = 10; //Количество страниц для пагинации
+        $count = 5; //Количество страниц для пагинации
 
         if (isset($_GET['page'])){ //Задать вопрос на паре!
             $page=($_GET['page']-1);
@@ -39,7 +39,7 @@ class Model_User extends Model
                     echo "<form action=\"/kanban/DeleteDesk\" method=\"post\">";
                         echo "<li>";
                             echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
-                            echo "<a href=\"/kanban/desk_info?id\" style=\"margin-left: 20px;\">"; // сделать преход на доску
+                            echo "<a href=\"/kanban/desk_info?id=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
                                 echo "<span class=\"name\">" . $row['id'] . " " . "</span>";    
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
@@ -123,7 +123,6 @@ class Model_User extends Model
             }else{
                 echo "ошибка";
             }
-
         }
     }
 }
