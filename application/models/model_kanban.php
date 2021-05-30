@@ -27,10 +27,15 @@ class Model_User extends Model
 
         $login_from = $_SESSION['login'];    //получаем логин пользователя
         $user = mysqli_query($mysqli, "SELECT * FROM `users` WHERE `login` = '$login_from'")->fetch_assoc();    //получаем инфу пользователя (не стринг)
-        $id_user = $user['id']; //получаем id пользователя
 
-        $select= mysqli_query($mysqli, "SELECT * FROM `boards` WHERE `id_user` = '$id_user' ORDER BY `id` DESC LIMIT $page, $count");
+        // вывод всех тем если админ
+        if($user["id_role"] == 1){
+            $select = mysqli_query($mysqli, "SELECT * FROM `boards` ORDER BY `id` DESC LIMIT $page, $count");
 
+        }else{
+            $id_user = $user['id']; //получаем id пользователя
+            $select= mysqli_query($mysqli, "SELECT * FROM `boards` WHERE `id_user` = '$id_user' ORDER BY `id` DESC LIMIT $page, $count");
+        }
         $xposp = $select->num_rows;
         if($select->num_rows): while($xposp>=0):
                 echo "<ul>";
@@ -39,9 +44,16 @@ class Model_User extends Model
                     echo "<form action=\"/kanban/DeleteDesk\" method=\"post\">";
                         echo "<li>";
                             echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
+                            
                             echo "<a href=\"/kanban/desk_info?id=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
+                                    if($user["id_role"] == 1){
+                                        // вывод логина если админ
+                                        $user_id = $row['id_user'];
+                                        $user_name = mysqli_query($mysqli, "SELECT `login` FROM `users` WHERE `id` = '$user_id'")->fetch_assoc();
+                                        echo "<span class=\"title\">". $user_name['login'] . " " . "</span>";
+                                    }
                             echo "</a>";
                         echo "</li>";
                     echo "</form>";
@@ -109,14 +121,18 @@ class Model_User extends Model
         $mysqli->set_charset('utf8');
 
         $deskname = $_POST["deskname"]; //получаем титул доски
-        $id_desk = $_POST["id"]; //получаем айди доски
 
-        if(isset($_POST["id"]) || isset($_POST["deskname"])){
+        if(isset($_POST["deskname"])){
             $login_from = $_SESSION['login'];
             $user = mysqli_query($mysqli, "SELECT * FROM `users` WHERE `login` = '$login_from'")->fetch_assoc();    //получаем инфу пользователя (не стринг)
-            $id_user = $user['id']; //получаем id пользователя
             
-            $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname' AND `id_user` = '$id_user'")->fetch_assoc();
+            if($user['id_role'] == 1){
+                $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname'");
+            }else{
+                $id_user = $user['id']; //получаем id пользователя
+                
+                $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname' AND `id_user` = '$id_user'")->fetch_assoc();
+            }
             $title_desk = $TitleDesk['id'];
             if(isset($title_desk)){
                 mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$title_desk'");
