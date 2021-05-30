@@ -53,5 +53,9 @@ class Controller_Kanban extends Controller
         }
     }
 
+    function action_desks_info(){
+        $this->model->desks_info_kanban();
+        $this->view->generate('desks_info.php', 'template_view.php');
+    }
 }
 ?>

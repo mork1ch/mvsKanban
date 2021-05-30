@@ -54,7 +54,9 @@ class Model_User extends Model
                             echo "<input style=\"display:none\" value = \"$id_bord\" id=\"id_bord\" name=\"id_bord\">";
                             echo "<input type=\"submit\" value=\"Удалить эту таблицу\">";
 
-                            echo "<a href=\"/kanban/desk_info/?page=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
+                            echo "</form>";
+                            echo "<form action=\"/kanban/desks_info\" method=\"post\">";
+                                echo "<input type=\"submit\" value=\"открыть\" href=\"/kanban/desks_info/?page=".$row['id']."\" style=\"margin-left: 20px;\">";
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
                                     if($user["id_role"] == 1){
@@ -173,6 +175,15 @@ class Model_User extends Model
         $id_bord = $_POST['id_bord'];
             mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_bord'");
             return "ok";
+    }
+
+    function Desks_info_kanban(){
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        $mysqli->set_charset('utf8');
+
     }
 }
 ?>
