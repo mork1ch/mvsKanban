@@ -41,7 +41,6 @@ class Model_User extends Model
                             echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
                             echo "<a href=\"/kanban/desk_info?id=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
-                                echo "<span class=\"name\">" . $row['id'] . " " . "</span>";    
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
                             echo "</a>";
                         echo "</li>";
@@ -109,15 +108,9 @@ class Model_User extends Model
             $user = mysqli_query($mysqli, "SELECT * FROM `users` WHERE `login` = '$login_from'")->fetch_assoc();    //получаем инфу пользователя (не стринг)
             $id_user = $user['id']; //получаем id пользователя
             
-            $IdDesk = mysqli_query($mysqli, "SELECT * FROM `boards` WHERE `id` = '$id_desk' AND `id_user` = '$id_user'")->fetch_assoc();
-            $id_desk = $IdDesk['id'];
-            
             $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname' AND `id_user` = '$id_user'")->fetch_assoc();
             $title_desk = $TitleDesk['id'];
-            if(isset($id_desk)){
-                mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_desk'");
-                return "ok";
-            }elseif(isset($title_desk)){
+            if(isset($title_desk)){
                 mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$title_desk'");
                 return "ok";
             }else{
