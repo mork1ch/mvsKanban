@@ -3,6 +3,7 @@ session_start();
 
 class Model_User extends Model
 {
+    
     function desks_kanban(){
 
         echo "<div class=\"content\" style=\"text-align:left\">";
@@ -24,6 +25,7 @@ class Model_User extends Model
         $res_pg = $mysqli->query($str_query_pg);
         $num = $res_pg->num_rows; //Получение количества строк
         $str_pag = ceil($num / $count); //Количество страниц
+
 
         $login_from = $_SESSION['login'];    //получаем логин пользователя
         $user = mysqli_query($mysqli, "SELECT * FROM `users` WHERE `login` = '$login_from'")->fetch_assoc();    //получаем инфу пользователя (не стринг)
@@ -52,7 +54,7 @@ class Model_User extends Model
                             echo "<input style=\"display:none\" value = \"$id_bord\" id=\"id_bord\" name=\"id_bord\">";
                             echo "<input type=\"submit\" value=\"Удалить эту таблицу\">";
 
-                            echo "<a href=\"/kanban/desk_info?id=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
+                            echo "<a href=\"/kanban/desk_info/?page=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
                                     if($user["id_role"] == 1){
@@ -75,9 +77,9 @@ class Model_User extends Model
         echo "<nav>";
             for ($i = 1; $i <= $str_pag; $i++){
                 if ($i == $current){
-                    echo "<a style='color:red;' href=kanban/desks?page=".$i."> ".$i." </a>";
+                    echo "<a style='color:red;' href=/kanban/desks/?page=".$i."> ".$i." </a>";
                 }else{
-                    echo "<a href=main.php?page=".$i."> ".$i." </a>";
+                    echo "<a href=/kanban/desks/?page=".$i."> ".$i." </a>";
                 }
             }
         echo "</nav>";
