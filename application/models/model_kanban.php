@@ -42,9 +42,16 @@ class Model_User extends Model
                 while ($row = mysqli_fetch_array($select)) {
 
                     echo "<form action=\"/kanban/DeleteDesk\" method=\"post\">";
+                        echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
+                    echo "</form>";
                         echo "<li>";
-                            echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
-                            
+                    
+                        echo "<form action=\"/kanban/delete_this_desk\" method=\"post\">";
+
+                            $id_bord = $row['id'];//передаем id, короче долбанные костыли
+                            echo "<input style=\"display:none\" value = \"$id_bord\" id=\"id_bord\" name=\"id_bord\">";
+                            echo "<input type=\"submit\" value=\"Удалить эту таблицу\">";
+
                             echo "<a href=\"/kanban/desk_info?id=".$row['id']."\" style=\"margin-left: 20px;\">"; // сделать преход на доску
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
@@ -57,7 +64,6 @@ class Model_User extends Model
                             echo "</a>";
                         echo "</li>";
                     echo "</form>";
-
                 }
                 $xposp = $xposp - 1;
 
@@ -97,14 +103,27 @@ class Model_User extends Model
             $title = $_POST['deskname'];
             $date = date('Y-m-d');
 
-            $query = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title`='".mysqli_real_escape_string($mysqli, $title)."'"); //Сверка с бд
-            if(mysqli_num_rows($query) > 0 || empty($_POST['deskname']))
+            
+            if(empty($_POST['deskname']))
             {
                 //defaul znach
-                $maxid = mysqli_query($mysqli, "Select max(`id`) as `maxid` from `boards`")->fetch_assoc();
-                $maxid = max($maxid) + 1;
+                
+                // $maxid = mysqli_query($mysqli, "Select max(`id`) as `maxid` from `boards`")->fetch_assoc();
+                // $maxid = max($maxid) + 1;
+                $maxid = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE 'id_user' = '$id'");
+                $maxid = $maxid->num_rows;
+                $maxid = $maxid + 1;
                 $title = "Новая_доска_".$maxid;
+                $query = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title`='".mysqli_real_escape_string($mysqli, $title)."'"); //Сверка с бд
+                while(mysqli_num_rows($query) > 0 ){
+                    $maxid = $maxid + 1;
+                    $title = "Новая_доска_".$maxid;
+                    $query = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title`='".mysqli_real_escape_string($mysqli, $title)."'"); //Сверка с бд
+                }
             }
+
+            
+
             mysqli_query($mysqli,"INSERT INTO `boards` (`id_user`, `title`, `date`) VALUES ('$id', '$title', '$date')");
                 return "ok";
         }else{
@@ -141,6 +160,17 @@ class Model_User extends Model
                 echo "ошибка";
             }
         }
+    }
+    function delete_this_desk_kanban(){
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        $mysqli->set_charset('utf8');
+
+        $id_bord = $_POST['id_bord'];
+            mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_bord'");
+            return "ok";
     }
 }
 ?>

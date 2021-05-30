@@ -42,5 +42,16 @@ class Controller_Kanban extends Controller
         }
     }
 
+    function action_delete_this_desk(){
+        $success = $this->model->delete_this_desk_kanban();
+
+        if ($success == "ok") {
+            $this->action_desks();
+        }
+        else {
+            $this->view->generate('deldesk_view.php', 'template_view.php');
+        }
+    }
+
 }
 ?>
