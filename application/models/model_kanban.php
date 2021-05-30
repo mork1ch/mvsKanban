@@ -85,10 +85,18 @@ class Model_User extends Model
             $title = $_POST['deskname'];
             $date = date('Y-m-d');
 
+            $query = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title`='".mysqli_real_escape_string($mysqli, $title)."'"); //Сверка с бд
+            if(mysqli_num_rows($query) > 0 || empty($_POST['deskname']))
+            {
+                //defaul znach
+                $maxid = mysqli_query($mysqli, "Select max(`id`) as `maxid` from `boards`")->fetch_assoc();
+                $maxid = max($maxid) + 1;
+                $title = "Новая_доска_".$maxid;
+            }
             mysqli_query($mysqli,"INSERT INTO `boards` (`id_user`, `title`, `date`) VALUES ('$id', '$title', '$date')");
-            return "ok";
+                return "ok";
         }else{
-            echo "Введите название доски";
+            echo "ошибка";
         }
     }
 
