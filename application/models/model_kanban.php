@@ -55,8 +55,8 @@ class Model_User extends Model
                             echo "<input type=\"submit\" value=\"Удалить эту таблицу\">";
 
                             echo "</form>";
-                            echo "<form action=\"/kanban/desks_info\" method=\"post\">";
-                                echo "<input type=\"submit\" value=\"открыть\" href=\"/kanban/desks_info/?page=".$row['id']."\" style=\"margin-left: 20px;\">";
+                            echo "<form action=\"/kanban/desks_info/?id=".$row['id']."\" method=\"post\">";
+                                echo "<input type=\"submit\" value=\"открыть\" style=\"margin-left: 20px;\">";
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
                                 echo "<span class=\"title\">". $row['title'] . " " . "</span>";
                                     if($user["id_role"] == 1){
@@ -129,7 +129,15 @@ class Model_User extends Model
             
 
             mysqli_query($mysqli,"INSERT INTO `boards` (`id_user`, `title`, `date`) VALUES ('$id', '$title', '$date')");
-                return "ok";
+            
+            $id_board = mysqli_query($mysqli, "Select max(`id`) as `maxid` from `boards`")->fetch_assoc();
+            $id_board = max($id_board);
+
+            mysqli_query($mysqli,"INSERT INTO `cell` (`id_board`, `title`, `date`) VALUES ('$id_board', 'ToDo', '$date')");
+            mysqli_query($mysqli,"INSERT INTO `cell` (`id_board`, `title`, `date`) VALUES ('$id_board', 'InProgress', '$date')");
+            mysqli_query($mysqli,"INSERT INTO `cell` (`id_board`, `title`, `date`) VALUES ('$id_board', 'Done', '$date')");
+
+            return "ok";
         }else{
             echo "ошибка";
         }
@@ -150,16 +158,21 @@ class Model_User extends Model
             $user = mysqli_query($mysqli, "SELECT * FROM `users` WHERE `login` = '$login_from'")->fetch_assoc();    //получаем инфу пользователя (не стринг)
             
             if($user['id_role'] == 1){
-                $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname'");
+                $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname'")->fetch_assoc();
             }else{
                 $id_user = $user['id']; //получаем id пользователя
                 
                 $TitleDesk = mysqli_query($mysqli, "SELECT `id` FROM `boards` WHERE `title` = '$deskname' AND `id_user` = '$id_user'")->fetch_assoc();
             }
+
             $title_desk = $TitleDesk['id'];
+
             if(isset($title_desk)){
                 mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$title_desk'");
+                mysqli_query($mysqli,"DELETE FROM `cell` WHERE `id_board` = '$title_desk'");
+
                 return "ok";
+                
             }else{
                 echo "ошибка";
             }
@@ -174,6 +187,9 @@ class Model_User extends Model
 
         $id_bord = $_POST['id_bord'];
             mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_bord'");
+
+            mysqli_query($mysqli,"DELETE FROM `cell` WHERE `id_board` = '$id_bord'");
+
             return "ok";
     }
 

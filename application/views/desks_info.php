@@ -21,11 +21,14 @@
     border-radius: 5px;
 }
 .Create_tik{
+    width: 200px;
+    margin: 5px auto;
     display: block;
     background-color: #fff;
     border-radius: 5px;
     padding: 5px 0;
-    margin: 10px 8px;
+    border: none;
+    font-size: 1.3em;
 }
 .tiket{
     background-color: #fff;
@@ -89,8 +92,10 @@
         <div class="vert ToDo">
             <h3>To Do</h3>
             <div class="info">
-
-                <a href="" class="Create_tik">Добавить тикет</a>
+            
+    <form action="/kanban/desks" method="post">
+                <button class="Create_tik" >Добавить тикет</button>
+    </form>
 
                 <div class="tikets">
                     <div class="tiket">
@@ -107,7 +112,7 @@
             <h3>InProgress</h3>
             <div class="info">
 
-                <a href="" class="Create_tik">Добавить тикет</a>
+            <a href="" class="Create_tik"  action="/user/run">Добавить тикет</a>
 
                 <div class="tikets">
                     <div class="tiket">
@@ -125,7 +130,7 @@
             <h3>Done</h3>
             <div class="info">
 
-                <a href="" class="Create_tik">Добавить тикет</a>
+            <a href="" class="Create_tik"  action="/user/run">Добавить тикет</a>
 
                 <div class="tikets">
                     <div class="tiket">
