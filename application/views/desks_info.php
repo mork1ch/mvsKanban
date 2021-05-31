@@ -93,7 +93,7 @@
             <h3>To Do</h3>
             <div class="info">
             
-    <form action="/kanban/desks" method="post">
+    <form action="/kanban/Create_new_tiket" method="post">
                 <button class="Create_tik" >Добавить тикет</button>
     </form>
 
@@ -104,6 +104,7 @@
                         <a href=""><span class="right"></span></a>
                         <div class="del"></div>
                     </div>
+
                 </div>
 
             </div>
@@ -112,7 +113,9 @@
             <h3>InProgress</h3>
             <div class="info">
 
-            <a href="" class="Create_tik"  action="/user/run">Добавить тикет</a>
+            <form action="/kanban/desks" method="post">
+                <button class="Create_tik" >Добавить тикет</button>
+            </form>
 
                 <div class="tikets">
                     <div class="tiket">
@@ -130,7 +133,9 @@
             <h3>Done</h3>
             <div class="info">
 
-            <a href="" class="Create_tik"  action="/user/run">Добавить тикет</a>
+            <form action="/kanban/desks" method="post">
+                <button class="Create_tik" >Добавить тикет</button>
+            </form>
 
                 <div class="tikets">
                     <div class="tiket">
