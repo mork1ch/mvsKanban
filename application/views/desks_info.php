@@ -88,7 +88,7 @@
 }
     </style>
 
-<div class="content">
+<!-- <div class="content">
         <div class="vert ToDo">
             <h3>To Do</h3>
             <div class="info">
@@ -109,6 +109,7 @@
 
             </div>
         </div>
+        
         <div class="vert InProgress">
             <h3>InProgress</h3>
             <div class="info">
@@ -149,4 +150,4 @@
 
             </div>
         </div>
-        <div class="New vert"><a href="">+</a></div>
+        <div class="New vert"><a href="">+</a></div> -->

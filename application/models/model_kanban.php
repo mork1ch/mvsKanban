@@ -133,6 +133,7 @@ class Model_User extends Model
             $id_board = mysqli_query($mysqli, "Select max(`id`) as `maxid` from `boards`")->fetch_assoc();
             $id_board = max($id_board);
 
+            //добавление колонок в новую доску
             mysqli_query($mysqli,"INSERT INTO `cell` (`id_board`, `title`, `date`) VALUES ('$id_board', 'ToDo', '$date')");
             mysqli_query($mysqli,"INSERT INTO `cell` (`id_board`, `title`, `date`) VALUES ('$id_board', 'InProgress', '$date')");
             mysqli_query($mysqli,"INSERT INTO `cell` (`id_board`, `title`, `date`) VALUES ('$id_board', 'Done', '$date')");
@@ -168,8 +169,10 @@ class Model_User extends Model
             $title_desk = $TitleDesk['id'];
 
             if(isset($title_desk)){
-                mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$title_desk'");
+
+                //удаление тикетов добавить
                 mysqli_query($mysqli,"DELETE FROM `cell` WHERE `id_board` = '$title_desk'");
+                mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$title_desk'");
 
                 return "ok";
                 
@@ -178,6 +181,7 @@ class Model_User extends Model
             }
         }
     }
+    
     function delete_this_desk_kanban(){
         $mysqli = $this->sql_connect();
         if ($mysqli->connect_error){
@@ -185,12 +189,12 @@ class Model_User extends Model
         }
         $mysqli->set_charset('utf8');
 
+        //удаление тикетов добавить
         $id_bord = $_POST['id_bord'];
-            mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_bord'");
+        mysqli_query($mysqli,"DELETE FROM `cell` WHERE `id_board` = '$id_bord'");
+        mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_bord'");  
 
-            mysqli_query($mysqli,"DELETE FROM `cell` WHERE `id_board` = '$id_bord'");
-
-            return "ok";
+        return "ok";
     }
 
     function Desks_info_kanban(){
@@ -200,6 +204,102 @@ class Model_User extends Model
         }
         $mysqli->set_charset('utf8');
 
+        $id = $_GET['id'];
+
+        // не могу без коментов
+        // получаем айдишки колонок для проверки ниже, еть ли в колонках инфа
+
+        $info_ToDo = mysqli_query($mysqli,"SELECT `id` FROM `cell` WHERE `title` = 'TODO' AND `id_board` = '$id'");
+        $strukt_ToDo = $info_ToDo;
+        $strukt_ToDo = $strukt_ToDo->fetch_assoc();
+        $id_todo = $strukt_ToDo['id'];
+
+        $info_InProgress = mysqli_query($mysqli,"SELECT `id` FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$id'");
+        $strukt_InProgress = $info_InProgress;
+        $strukt_InProgress = $strukt_InProgress->fetch_assoc();
+        $id_InProgress = $strukt_InProgress['id'];
+
+        $info_Done = mysqli_query($mysqli,"SELECT `id` FROM `cell` WHERE `title` = 'Done' AND `id_board` = '$id'");
+        $strukt_Done = $info_Done;
+        $strukt_Done = $strukt_Done->fetch_assoc();
+        $id_Done = $strukt_Done['id'];
+
+        
+
+        //html verstka
+
+        echo "<div class=\"content\">";
+            echo " <div class=\"vert ToDo\">";
+                echo "<h3>To Do</h3>";
+                echo "<div class=\"info\">";
+                    echo "<form action=\"/kanban/Create_new_tiket\" method=\"post\">";
+                        echo "<button class=\"Create_tik\" >Добавить тикет</button>";
+                    echo "</form>";
+                    $tikets_TODO = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_todo'");
+                    $tiket_array_TODO = $tikets_TODO;
+                    $tiket_array_TODO = $tiket_array_TODO->fetch_assoc();
+                    $tiket_id_TODO = $tiket_array_TODO['id'];
+                    $num_rows_strukt_tikets_TODO = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_todo'")->fetch_assoc();
+                    $num_rows_strukt_tikets_TODO = $num_rows_strukt_tikets_TODO['COUNT(*)'];
+
+                    //проверка есть ли тикеты
+
+                        // echo "id - ";
+                        // echo "$id";
+                        // echo "<br>";
+                        
+                        // echo "id_todo - ";
+                        // echo "$id_todo";
+                        // echo "<br>";
+
+                        // echo "strukt_tikets_TODO - ";
+                        // echo $tiket_id_TODO;
+                        // echo "<br>";
+
+                        // echo "num_rows_strukt_tikets_TODO - ";
+                        // echo $num_rows_strukt_tikets_TODO;
+                        // echo "<br>";
+
+                        // echo "lol";
+
+                    if($num_rows_strukt_tikets_TODO >= 1) : while($num_rows_strukt_tikets_TODO >= 0):
+                            //вывод тикетов
+                            echo "<div class=\"tikets\">";
+                                while($row = mysqli_fetch_array($tikets_TODO)){
+                                    echo "<div class=\"tiket\">";
+                                        echo "<a href=\"\"><span class=\"left\"></span></a>";
+                                        echo "<p>". $row['title'] . " " . "</p>";
+                                        echo "<a href=\"\"><span class=\"right\"></span></a>";
+                                        echo "<div class=\"del\"></div>";
+                                    echo "</div>";
+                                }
+                                echo "";
+
+                            echo "</div>";
+                            $num_rows_strukt_tikets_TODO = $num_rows_strukt_tikets_TODO - 1;
+                        endwhile;
+                    endif;
+                echo "</div>";
+            echo "</div>";
+
+            $tikets_InProgress = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = $id_InProgress'")->num_rows;
+            $tiket_id_InProgress = $tikets_InProgress['id'];
+            //проверка есть ли тикеты
+            
+            //проверка есть ли тикеты
+            
+        echo "</div>";
+    }
+
+    function Create_new_tiket(){
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        $mysqli->set_charset('utf8');
+
+        $id = $_GET['id'];
+        
     }
 }
 ?>

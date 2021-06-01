@@ -54,14 +54,13 @@ class Controller_Kanban extends Controller
     }
 
     function action_desks_info(){
-        $this->model->desks_info_kanban();
         $this->view->generate('desks_info.php', 'template_view.php');
+        $this->model->desks_info_kanban();
     }
 
     function action_Create_new_tiket(){
-        $this->model->Create_new_tiket();
-
         $this->view->generate('desks_info.php', 'template_view.php');
+        $this->model->Create_new_tiket();
     }
 }
 ?>
