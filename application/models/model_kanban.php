@@ -229,6 +229,7 @@ class Model_User extends Model
         //html verstka
 
         echo "<div class=\"content\">";
+
             echo " <div class=\"vert ToDo\">";
                 echo "<h3>To Do</h3>";
                 echo "<div class=\"info\">";
@@ -239,55 +240,109 @@ class Model_User extends Model
                     $tiket_array_TODO = $tikets_TODO;
                     $tiket_array_TODO = $tiket_array_TODO->fetch_assoc();
                     $tiket_id_TODO = $tiket_array_TODO['id'];
-                    $num_rows_strukt_tikets_TODO = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_todo'")->fetch_assoc();
-                    $num_rows_strukt_tikets_TODO = $num_rows_strukt_tikets_TODO['COUNT(*)'];
+                    $num_rowsa_strukt_tikets_TODO = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_todo'")->fetch_assoc();
+                    $num_rows_strukt_tikets_TODO = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_todo'");
+                    $num_rowsa_strukt_tikets_TODO = $num_rowsa_strukt_tikets_TODO['COUNT(*)'];
 
-                    //проверка есть ли тикеты
+                    if($num_rowsa_strukt_tikets_TODO >= 1) {
+                        if ($num_rows_strukt_tikets_TODO->num_rows) : while($num_rows_strukt_tikets_TODO > 0):
+                                //вывод тикетов
+                                echo "<div class=\"tikets\">";
+                                    while ($row = mysqli_fetch_array($num_rows_strukt_tikets_TODO)){   
+                                        echo "<div class=\"tiket\">";
+                                            echo "<a href=\"\"><span class=\"left\"></span></a>";
+                                            echo "<p>". $row['title'] . " " . "</p>";
+                                            echo "<a href=\"\"><span class=\"right\"></span></a>";
+                                            echo "<div class=\"del\"></div>";
+                                        echo "</div>";
+                                    }
+                                    echo "";
 
-                        // echo "id - ";
-                        // echo "$id";
-                        // echo "<br>";
-                        
-                        // echo "id_todo - ";
-                        // echo "$id_todo";
-                        // echo "<br>";
 
-                        // echo "strukt_tikets_TODO - ";
-                        // echo $tiket_id_TODO;
-                        // echo "<br>";
-
-                        // echo "num_rows_strukt_tikets_TODO - ";
-                        // echo $num_rows_strukt_tikets_TODO;
-                        // echo "<br>";
-
-                        // echo "lol";
-
-                    if($num_rows_strukt_tikets_TODO >= 1) : while($num_rows_strukt_tikets_TODO >= 0):
-                            //вывод тикетов
-                            echo "<div class=\"tikets\">";
-                                while($row = mysqli_fetch_array($tikets_TODO)){
-                                    echo "<div class=\"tiket\">";
-                                        echo "<a href=\"\"><span class=\"left\"></span></a>";
-                                        echo "<p>". $row['title'] . " " . "</p>";
-                                        echo "<a href=\"\"><span class=\"right\"></span></a>";
-                                        echo "<div class=\"del\"></div>";
-                                    echo "</div>";
-                                }
-                                echo "";
-
-                            echo "</div>";
-                            $num_rows_strukt_tikets_TODO = $num_rows_strukt_tikets_TODO - 1;
-                        endwhile;
-                    endif;
+                                echo "</div>";
+                                $num_rows_strukt_tikets_TODO = $num_rows_strukt_tikets_TODO - 1;
+                            endwhile;
+                        endif;
+                    }
                 echo "</div>";
             echo "</div>";
 
-            $tikets_InProgress = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = $id_InProgress'")->num_rows;
-            $tiket_id_InProgress = $tikets_InProgress['id'];
             //проверка есть ли тикеты
-            
+            echo " <div class=\"vert InProgress\">";
+                echo "<h3>InProgress</h3>";
+                echo "<div class=\"info\">";
+                    echo "<form action=\"/kanban/Create_new_tiket\" method=\"post\">";
+                        echo "<button class=\"Create_tik\" >Добавить тикет</button>";
+                    echo "</form>";
+                    $tikets_InProgress = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_InProgress'");
+                    $tiket_array_InProgress = $tikets_InProgress;
+                    $tiket_array_InProgress = $tiket_array_InProgress->fetch_assoc();
+                    $tiket_id_InProgress = $tiket_array_InProgress['id'];
+                    $num_rowsa_strukt_tikets_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_InProgress'")->fetch_assoc();
+                    $num_rows_strukt_tikets_InProgress = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_InProgress'");
+                    $num_rowsa_strukt_tikets_InProgress = $num_rowsa_strukt_tikets_InProgress['COUNT(*)'];
+
+                    if($num_rowsa_strukt_tikets_InProgress >= 1) {
+                        if ($num_rows_strukt_tikets_InProgress->num_rows) : while($num_rows_strukt_tikets_InProgress > 0):
+                                //вывод тикетов
+                                echo "<div class=\"tikets\">";
+                                    while ($row = mysqli_fetch_array($num_rows_strukt_tikets_InProgress)){   
+                                        echo "<div class=\"tiket\">";
+                                            echo "<a href=\"\"><span class=\"left\"></span></a>";
+                                            echo "<p>". $row['title'] . " " . "</p>";
+                                            echo "<a href=\"\"><span class=\"right\"></span></a>";
+                                            echo "<div class=\"del\"></div>";
+                                        echo "</div>";
+                                    }
+                                    echo "";
+
+
+                                echo "</div>";
+                                $num_rows_strukt_tikets_InProgress = $num_rows_strukt_tikets_InProgress - 1;
+                            endwhile;
+                        endif;
+                    }
+                echo "</div>";
+            echo "</div>";
+
             //проверка есть ли тикеты
-            
+            echo " <div class=\"vert Done\">";
+                echo "<h3>Done</h3>";
+                echo "<div class=\"info\">";
+                    echo "<form action=\"/kanban/Create_new_tiket\" method=\"post\">";
+                        echo "<button class=\"Create_tik\" >Добавить тикет</button>";
+                    echo "</form>";
+                    $tikets_Done = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_Done'");
+                    $tiket_array_Done = $tikets_Done;
+                    $tiket_array_Done = $tiket_array_Done->fetch_assoc();
+                    $tiket_id_Done = $tiket_array_Done['id'];
+                    $num_rowsa_strukt_tikets_Done = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_Done'")->fetch_assoc();
+                    $num_rows_strukt_tikets_Done = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_Done'");
+                    $num_rowsa_strukt_tikets_Done = $num_rowsa_strukt_tikets_Done['COUNT(*)'];
+
+                    if($num_rowsa_strukt_tikets_Done >= 1) {
+                        if ($num_rows_strukt_tikets_Done->num_rows) : while($num_rows_strukt_tikets_Done > 0):
+                                //вывод тикетов
+                                echo "<div class=\"tikets\">";
+                                    while ($row = mysqli_fetch_array($num_rows_strukt_tikets_Done)){   
+                                        echo "<div class=\"tiket\">";
+                                            echo "<a href=\"\"><span class=\"left\"></span></a>";
+                                            echo "<p>". $row['title'] . " " . "</p>";
+                                            echo "<a href=\"\"><span class=\"right\"></span></a>";
+                                            echo "<div class=\"del\"></div>";
+                                        echo "</div>";
+                                    }
+                                    echo "";
+
+
+                                echo "</div>";
+                                $num_rows_strukt_tikets_Done = $num_rows_strukt_tikets_Done - 1;
+                            endwhile;
+                        endif;
+                    }
+                echo "</div>";
+            echo "</div>";
+
         echo "</div>";
     }
 
