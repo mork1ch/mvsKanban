@@ -191,6 +191,9 @@ class Model_User extends Model
 
         //удаление тикетов добавить
         $id_bord = $_POST['id_bord'];
+        $id_cell = mysqli_query($mysqli,"SELECT `id` FROM `cell` WHERE `id_board` = '$id_bord'")->fetch_assoc();
+        $id_cell = $id_cell['id'];
+        mysqli_query($mysqli,"DELETE FROM `tikets` WHERE `id_cell` = '$id_cell'");
         mysqli_query($mysqli,"DELETE FROM `cell` WHERE `id_board` = '$id_bord'");
         mysqli_query($mysqli,"DELETE FROM `boards` WHERE `boards`.`id` = '$id_bord'");  
 

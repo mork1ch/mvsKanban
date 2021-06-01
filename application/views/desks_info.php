@@ -4,12 +4,13 @@
 <style>
         
 .content{
-    min-width: 800px;
+    min-width: 1000px;
 }
 
 .content .vert{
     width: 300px;
     display: inline-block;
+    vertical-align: top;
 }
 .content h3{
     margin-bottom: 25px;
