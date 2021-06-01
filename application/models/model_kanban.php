@@ -209,6 +209,9 @@ class Model_User extends Model
 
         $id = $_GET['id'];
 
+        //Название доски
+        $deskname = mysqli_query($mysqli,"SELECT `title` FROM `boards` WHERE `id` = '$id'")->fetch_assoc();
+        $deskname = $deskname['title'];
         // не могу без коментов
         // получаем айдишки колонок для проверки ниже, еть ли в колонках инфа
 
@@ -236,9 +239,6 @@ class Model_User extends Model
             echo " <div class=\"vert ToDo\">";
                 echo "<h3>To Do</h3>";
                 echo "<div class=\"info\">";
-                    echo "<form action=\"/kanban/Create_new_tiket\" method=\"post\">";
-                        echo "<button class=\"Create_tik\" >Добавить тикет</button>";
-                    echo "</form>";
                     $tikets_TODO = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_todo'");
                     $tiket_array_TODO = $tikets_TODO;
                     $tiket_array_TODO = $tiket_array_TODO->fetch_assoc();
@@ -246,6 +246,10 @@ class Model_User extends Model
                     $num_rowsa_strukt_tikets_TODO = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_todo'")->fetch_assoc();
                     $num_rows_strukt_tikets_TODO = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id_cell` = '$id_todo'");
                     $num_rowsa_strukt_tikets_TODO = $num_rowsa_strukt_tikets_TODO['COUNT(*)'];
+
+                    echo "<form action=\"/kanban/Create_new_tiket/".$deskname."/?deskid=".$id."&id=".$id_todo."\" method=\"post\">";
+                        echo "<button class=\"Create_tik\" >Добавить тикет</button>";
+                    echo "</form>";
 
                     if($num_rowsa_strukt_tikets_TODO >= 1) {
                         if ($num_rows_strukt_tikets_TODO->num_rows) : while($num_rows_strukt_tikets_TODO > 0):
@@ -350,14 +354,29 @@ class Model_User extends Model
     }
 
     function Create_new_tiket(){
+        if (empty($_SESSION['login'])) 
+        {
+            die("<p>Создание тем доступно только для авторизованых пользователей!</p>");
+        }
         $mysqli = $this->sql_connect();
         if ($mysqli->connect_error){
             die('Error');
         }
+        
         $mysqli->set_charset('utf8');
 
+        $deskid = $_GET['deskid'];
         $id = $_GET['id'];
-        
+        $tiket_title = $_POST['title'];
+
+        if(!empty($tiket_title)){
+            mysqli_query($mysqli,"INSERT INTO `tikets` (`id_cell`, `title`) VALUES ('$id', '$tiket_title')");
+            // return "214";
+            return $deskid;
+        }else{
+            echo "ошибка- не указанно название";
+        }
     }
+
 }
 ?>

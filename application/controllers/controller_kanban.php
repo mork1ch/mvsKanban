@@ -20,7 +20,7 @@ class Controller_Kanban extends Controller
         $success = $this->model->newdesk_kanban();
 
         if ($success == "ok") {
-            $this->action_desks();
+            header("Location: /kanban/desks");
         }
         else {
             $this->view->generate('newdesk_view.php', 'template_view.php');
@@ -35,7 +35,7 @@ class Controller_Kanban extends Controller
 
         $success = $this->model->deldesk_kanban();
         if ($success == "ok") {
-            $this->action_desks();
+            header("Location: /kanban/desks");
         }
         else {
             $this->view->generate('deldesk_view.php', 'template_view.php');
@@ -46,7 +46,7 @@ class Controller_Kanban extends Controller
         $success = $this->model->delete_this_desk_kanban();
 
         if ($success == "ok") {
-            $this->action_desks();
+            header("Location: /kanban/desks");
         }
         else {
             $this->view->generate('deldesk_view.php', 'template_view.php');
@@ -59,8 +59,17 @@ class Controller_Kanban extends Controller
     }
 
     function action_Create_new_tiket(){
-        $this->view->generate('desks_info.php', 'template_view.php');
-        $this->model->Create_new_tiket();
+        $this->view->generate('Create_new_tiket.php', 'template_view.php');
+    }
+
+    function action_Create_new_tiket_do(){
+        $deskid = $this->model->Create_new_tiket();
+        if (isset($deskid)) {
+            header("Location: /kanban/desks_info/?id=$deskid");
+        }
+        else {
+            $this->view->generate('Create_new_tiket.php', 'template_view.php');
+        }
     }
 }
 ?>
