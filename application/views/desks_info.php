@@ -39,7 +39,6 @@
     }
 
     .del{
-        float: right;
         margin-top: 5px;
         width: 15px;
         height: 15px;

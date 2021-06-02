@@ -105,5 +105,14 @@ class Controller_Kanban extends Controller
             $this->view->generate('Rename_tiket.php', 'template_view.php');
         }
     }
+
+    function action_rename_desk(){
+        $this->view->generate('Rename_desk.php', 'template_view.php');
+    }
+
+    function action_rename_desk_do(){
+        $this->model->rename_desk_do_kanban();
+            header("Location: /kanban/desks");
+    }
 }
 ?>

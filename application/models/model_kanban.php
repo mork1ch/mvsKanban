@@ -43,18 +43,18 @@ class Model_User extends Model
                 echo "<ul>";
                 while ($row = mysqli_fetch_array($select)) {
 
-                    echo "<form action=\"/kanban/DeleteDesk\" method=\"post\">";
-                        echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
+                    echo "<form action=\"/kanban/delete_this_desk\" method=\"post\">";
+                        $id_bord = $row['id'];//передаем id, короче долбанные костыли
+                        echo "<input style=\"display:none\" value = \"$id_bord\" id=\"id_bord\" name=\"id_bord\">";
+                        // echo "<a href=\"/kanban/deldesk\" class=\"del\" style=\"float:left;border:0;background-color: #fff;\"></a>";
+                        echo "<input type=\"submit\"class=\"del\" style=\"float:left;border:0;background-color: #fff;\" value=\"\">";
                     echo "</form>";
                         echo "<li>";
                     
-                        echo "<form action=\"/kanban/delete_this_desk\" method=\"post\">";
-
-                            $id_bord = $row['id'];//передаем id, короче долбанные костыли
-                            echo "<input style=\"display:none\" value = \"$id_bord\" id=\"id_bord\" name=\"id_bord\">";
-                            echo "<input type=\"submit\" value=\"Удалить эту таблицу\">";
-
+                            echo "<form action=\"/kanban/rename_desk/?id=".$row['id']."\" method=\"post\">";
+                                echo "<input type=\"submit\" value=\"Поменять название\">";
                             echo "</form>";
+
                             echo "<form action=\"/kanban/desks_info/?id=".$row['id']."\" method=\"post\">";
                                 echo "<input type=\"submit\" value=\"открыть\" style=\"margin-left: 20px;\">";
                                 echo "<span class=\"data\">" . $row['date'] . " " . "</span>";
@@ -602,6 +602,30 @@ class Model_User extends Model
             mysqli_query($mysqli,"UPDATE `tikets` SET `title` = '$tiket_title' WHERE `tikets`.`id` = '$id'");
 
             return $deskid;
+        }else{
+            echo "<script>alert('ошибка- не указанно название')</script>";
+        }
+    }
+
+    function rename_desk_do_kanban(){
+        
+        if (empty($_SESSION['login'])) 
+        {
+            die("<p>Создание тем доступно только для авторизованых пользователей!</p>");
+        }
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        
+        $mysqli->set_charset('utf8');
+
+        $id = $_GET['id'];
+        $tiket_title = $_POST['title'];
+
+        if(!empty($tiket_title)){
+            mysqli_query($mysqli,"UPDATE `boards` SET `title` = '$tiket_title' WHERE `boards`.`id` = '$id'");
+
         }else{
             echo "<script>alert('ошибка- не указанно название')</script>";
         }
