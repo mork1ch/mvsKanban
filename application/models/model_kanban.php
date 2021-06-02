@@ -259,19 +259,33 @@ class Model_User extends Model
                                 
                                         while ($row = mysqli_fetch_array($num_rows_strukt_tikets_TODO)){   
                                             echo "<div class=\"tiket\">";
-                                                    echo "<a href=\"\"><span class=\"left\"></span></a>";
-                                                    echo "<p>". $row['title'] . " " . "</p>";
-                                                    echo "<a href=\"\"><span class=\"right\"></span></a>";
                                                     //опять костыли для передачи id
+                                                    $id_tiket = $row['id'];//передаем id, короче долбанные костыли
+                                                    echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                    
+                                                    echo "<form action=\"/kanban/send_left_cell\" method=\"post\" style=\"display:inline-block;float:left;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"lefta\" value=\"\"></input>";
+                                                    echo "</form>";
+                                                    
+                                                    echo "<p>". $row['title'] . " " . "</p>";
+                                                    
+                                                    echo "<form action=\"/kanban/send_right_cell\" method=\"post\" style=\"display:inline-block;float:right;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"righta\" value=\"\"></input>";
+                                                    echo "</form>";
 
                                                     echo "<form action=\"/kanban/delete_this_tiket\" method=\"post\" style=\"display:inline-block;float:right;\">";
-                                                        
-                                                        $id_tiket = $row['id'];//передаем id, короче долбанные костыли
                                                         echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
-
                                                         echo "<input type=\"submit\" class=\"del\" value=\"\"></input>";
                                                     echo "</form>";
                                                 
+                                                    echo "<div class=\"clearfix\"></div>";
+                                                    echo "<form action=\"/kanban/rename_tiket/?deskid=".$deskid."&id=".$id_tiket."\" method=\"post\" style=\"display:block;width:130px;height:20px;margin: 0 auto;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" value=\"Изменить название\" style=\"width:130px;height:20px;bgcolor:#fff;\"></input>";
+                                                    echo "</form>";
+
                                             echo "</div>";
                                         }
                                     
@@ -313,22 +327,34 @@ class Model_User extends Model
                                 echo "<div class=\"tikets\">";
                                     while ($row = mysqli_fetch_array($num_rows_strukt_tikets_InProgress)){   
                                         echo "<div class=\"tiket\">";
-                                        
-                                                echo "<a href=\"\"><span class=\"left\"></span></a>";
-                                                echo "<p>". $row['title'] . " " . "</p>";
-                                                echo "<a href=\"\"><span class=\"right\"></span></a>";
-                                                //опять костыли для передачи id
-
-                                                echo "<form action=\"/kanban/delete_this_tiket\" method=\"post\" style=\"display:inline-block;float:right;\">";
-                                                    
+                                                    //опять костыли для передачи id
                                                     $id_tiket = $row['id'];//передаем id, короче долбанные костыли
                                                     echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                    
+                                                    echo "<form action=\"/kanban/send_left_cell\" method=\"post\" style=\"display:inline-block;float:left;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"lefta\" value=\"\"></input>";
+                                                    echo "</form>";
+                                                    
+                                                    echo "<p>". $row['title'] . " " . "</p>";
+                                                    
+                                                    echo "<form action=\"/kanban/send_right_cell\" method=\"post\" style=\"display:inline-block;float:right;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"righta\" value=\"\"></input>";
+                                                    echo "</form>";
 
-                                                    echo "<input type=\"submit\" class=\"del\" value=\"\"></input>";
-                                                echo "</form>";
-                                            
+                                                    echo "<form action=\"/kanban/delete_this_tiket\" method=\"post\" style=\"display:inline-block;float:right;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"del\" value=\"\"></input>";
+                                                    echo "</form>";
+                                                
+                                                    echo "<div class=\"clearfix\"></div>";
+                                                    echo "<form action=\"/kanban/rename_tiket/?deskid=".$deskid."&id=".$id_tiket."\" method=\"post\" style=\"display:block;width:130px;height:20px;margin: 0 auto;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" value=\"Изменить название\" style=\"width:130px;height:20px;bgcolor:#fff;\"></input>";
+                                                    echo "</form>";
 
-                                        echo "</div>";
+                                            echo "</div>";
                                     }
                                     echo "";
 
@@ -369,22 +395,33 @@ class Model_User extends Model
                                 echo "<div class=\"tikets\">";
                                     while ($row = mysqli_fetch_array($num_rows_strukt_tikets_Done)){   
                                         echo "<div class=\"tiket\">";
-                                        
-                                                echo "<a><span class=\"left\"></span></a>";
-                                                echo "<p>". $row['title'] . " " . "</p>";
-                                                echo "<a href=\"\"><span class=\"right\"></span></a>";
-                                                //опять костыли для передачи id
-
-                                                echo "<form action=\"/kanban/delete_this_tiket\" method=\"post\" style=\"display:inline-block;float:right;\">";
-                                                    
+                                                    //опять костыли для передачи id
                                                     $id_tiket = $row['id'];//передаем id, короче долбанные костыли
                                                     echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                    
+                                                    echo "<form action=\"/kanban/send_left_cell\" method=\"post\" style=\"display:inline-block;float:left;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"lefta\" value=\"\"></input>";
+                                                    echo "</form>";
+                                                    
+                                                    echo "<p>". $row['title'] . " " . "</p>";
+                                                    
+                                                    echo "<form action=\"/kanban/send_right_cell\" method=\"post\" style=\"display:inline-block;float:right;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"righta\" value=\"\"></input>";
+                                                    echo "</form>";
 
-                                                    echo "<input type=\"submit\" class=\"del\" value=\"\"></input>";
-                                                echo "</form>";
-                                            
-
-                                        echo "</div>";
+                                                    echo "<form action=\"/kanban/delete_this_tiket\" method=\"post\" style=\"display:inline-block;float:right;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" class=\"del\" value=\"\"></input>";
+                                                    echo "</form>";
+                                                    echo "<div class=\"clearfix\"></div>";
+                                                    echo "<form action=\"/kanban/rename_tiket/?deskid=".$deskid."&id=".$id_tiket."\" method=\"post\" style=\"display:block;width:130px;height:20px;margin: 0 auto;\">";
+                                                        echo "<input style=\"display:none\" value = \"$id_tiket\" id=\"id_tiket\" name=\"id_tiket\">";
+                                                        echo "<input type=\"submit\" value=\"Изменить название\" style=\"width:130px;height:20px;bgcolor:#fff;\"></input>";
+                                                    echo "</form>";
+                                                
+                                            echo "</div>";
                                     }
                                     echo "";
 
@@ -406,7 +443,7 @@ class Model_User extends Model
         echo "</div>";
     }
 
-    function Create_new_tiket(){
+    function Create_new_tiket_kanban(){
         if (empty($_SESSION['login'])) 
         {
             die("<p>Создание тем доступно только для авторизованых пользователей!</p>");
@@ -431,7 +468,7 @@ class Model_User extends Model
         }
     }
 
-    function delete_this_tiket(){
+    function delete_this_tiket_kanban(){
         $mysqli = $this->sql_connect();
         if ($mysqli->connect_error){
             die('Error');
@@ -450,5 +487,104 @@ class Model_User extends Model
         
         return $deskid;
     }
+
+    function send_left_cell_kanban(){
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        $mysqli->set_charset('utf8');
+
+        $id_tiket = $_POST['id_tiket'];
+        
+        $id_cell = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id` = '$id_tiket'")->fetch_assoc();
+        $id_cell = $id_cell['id_cell']; 
+        $deskid = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
+        $deskid = $deskid['id_board'];
+        
+        $id_cell = $id_cell - 1;
+        $proverka_na_dosky = mysqli_query($mysqli,"SELECT COUNT(*) FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
+        $proverka_na_dosky = $proverka_na_dosky['COUNT(*)'];
+
+        $id_InProgress = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$deskid'")->fetch_assoc();
+        $id_InProgress = $id_InProgress['id'];
+        $ogranich_na_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_cell'")->fetch_assoc();
+        $ogranich_na_InProgress = $ogranich_na_InProgress['COUNT(*)'];
+        
+        if($proverka_na_dosky > 0){
+            if($ogranich_na_InProgress < 3){
+                mysqli_query($mysqli,"UPDATE `tikets` SET `id_cell` = '$id_cell' WHERE `tikets`.`id` = '$id_tiket'");
+                return $deskid;
+            }else{
+                echo "<script>alert('В таблице InProgress уже максимальное количество тикетов')</script>";
+            }
+        }else{
+            return $deskid;
+            echo "<script>alert('слева нет досок')</script>";
+        }
+    }
+    
+    function send_right_cell_kanban(){
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        $mysqli->set_charset('utf8');
+
+        $id_tiket = $_POST['id_tiket'];
+        
+        $id_cell = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id` = '$id_tiket'")->fetch_assoc();
+        $id_cell = $id_cell['id_cell']; 
+        $deskid = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
+        $deskid = $deskid['id_board'];
+        
+        $id_cell = $id_cell + 1;
+        $proverka_na_dosky = mysqli_query($mysqli,"SELECT COUNT(*) FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
+        $proverka_na_dosky = $proverka_na_dosky['COUNT(*)'];
+
+        $id_InProgress = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$deskid'")->fetch_assoc();
+        $id_InProgress = $id_InProgress['id'];
+        $ogranich_na_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_cell'")->fetch_assoc();
+        $ogranich_na_InProgress = $ogranich_na_InProgress['COUNT(*)'];
+        
+        if($proverka_na_dosky > 0){
+            if($ogranich_na_InProgress < 3){
+                mysqli_query($mysqli,"UPDATE `tikets` SET `id_cell` = '$id_cell' WHERE `tikets`.`id` = '$id_tiket'");
+                return $deskid;
+            }else{
+                echo "<script>alert('В таблице InProgress уже максимальное количество тикетов')</script>";
+            }
+        }else{
+            echo "<script>alert('справа нет досок')</script>";
+            return $deskid;
+        }
+
+    }
+
+    function Rename_tiket_kanban(){
+        if (empty($_SESSION['login'])) 
+        {
+            die("<p>Создание тем доступно только для авторизованых пользователей!</p>");
+        }
+        $mysqli = $this->sql_connect();
+        if ($mysqli->connect_error){
+            die('Error');
+        }
+        
+        $mysqli->set_charset('utf8');
+
+        $deskid = $_GET['deskid'];
+        $id = $_GET['id'];
+        $tiket_title = $_POST['title'];
+
+        if(!empty($tiket_title)){
+            mysqli_query($mysqli,"UPDATE `tikets` SET `title` = '$tiket_title' WHERE `tikets`.`id` = '$id'");
+
+            return $deskid;
+        }else{
+            echo "<script>alert('ошибка- не указанно название')</script>";
+        }
+    }
+
 }
 ?>

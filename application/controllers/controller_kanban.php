@@ -63,7 +63,7 @@ class Controller_Kanban extends Controller
     }
 
     function action_Create_new_tiket_do(){
-        $deskid = $this->model->Create_new_tiket();
+        $deskid = $this->model->Create_new_tiket_kanban();
         if (isset($deskid)) {
             header("Location: /kanban/desks_info/?id=$deskid");
         }
@@ -71,9 +71,34 @@ class Controller_Kanban extends Controller
             $this->view->generate('Create_new_tiket.php', 'template_view.php');
         }
     }
+
     function action_delete_this_tiket(){
-        $deskid = $this->model->delete_this_tiket();
+        $deskid = $this->model->delete_this_tiket_kanban();
         header("Location: /kanban/desks_info/?id=$deskid");
+    }
+
+    function action_send_left_cell(){
+        $deskid = $this->model->send_left_cell_kanban();
+        header("Location: /kanban/desks_info/?id=$deskid");
+    }
+
+    function action_send_right_cell(){
+        $deskid = $this->model->send_right_cell_kanban();
+        header("Location: /kanban/desks_info/?id=$deskid");
+    }
+    
+    function action_rename_tiket(){
+        $this->view->generate('Rename_tiket.php', 'template_view.php');
+    }
+    
+    function action_Rename_tiket_do(){
+        $deskid = $this->model->Rename_tiket_kanban();
+        if (isset($deskid)) {
+            header("Location: /kanban/desks_info/?id=$deskid");
+        }
+        else {
+            $this->view->generate('Rename_tiket.php', 'template_view.php');
+        }
     }
 }
 ?>

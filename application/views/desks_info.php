@@ -49,8 +49,11 @@
         background-repeat: no-repeat;
         display: inline-block;
         border: none;
+        background-color: #fff;
     }
-    .content .tikets .left{
+    .content .tikets .lefta{
+        border: none;
+        background-color: #fff;
         background-image: url(../../images/left.png);
         background-position: center;
         width: 10px;
@@ -63,7 +66,9 @@
     .content .tikets p{
         display: inline;
     }
-    .content .tikets .right{
+    .content .tikets .righta{
+        border: none;
+        background-color: #fff;
         background-image: url(../../images/right.png);
         background-position: center;
         width: 10px;
