@@ -79,12 +79,17 @@ class Controller_Kanban extends Controller
 
     function action_send_left_cell(){
         $deskid = $this->model->send_left_cell_kanban();
-        header("Location: /kanban/desks_info/?id=$deskid");
+        $id = $deskid['id_board'];
+        header("Location: /kanban/desks_info/?id=$id");
+        $err = $deskid['err'];
+        
+        return $err;
     }
 
     function action_send_right_cell(){
         $deskid = $this->model->send_right_cell_kanban();
-        header("Location: /kanban/desks_info/?id=$deskid");
+        $id = $deskid['id_board'];
+        header("Location: /kanban/desks_info/?id=$id");
     }
     
     function action_rename_tiket(){

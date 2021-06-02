@@ -495,28 +495,39 @@ class Model_User extends Model
         }
         $mysqli->set_charset('utf8');
 
+        // echo "$err";
+
         $id_tiket = $_POST['id_tiket'];
         
         $id_cell = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id` = '$id_tiket'")->fetch_assoc();
         $id_cell = $id_cell['id_cell']; 
         $deskid = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
-        $deskid = $deskid['id_board'];
+        $deskid['id'] = $deskid['id_board'];
+        $id_board = $deskid['id'];
+
         
         $id_cell = $id_cell - 1;
         $proverka_na_dosky = mysqli_query($mysqli,"SELECT COUNT(*) FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
         $proverka_na_dosky = $proverka_na_dosky['COUNT(*)'];
 
-        $id_InProgress = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$deskid'")->fetch_assoc();
+        $id_InProgress = mysqli_query($mysqli,"SELECT `id` FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$id_board'")->fetch_assoc();
         $id_InProgress = $id_InProgress['id'];
-        $ogranich_na_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_cell'")->fetch_assoc();
+        $ogranich_na_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_InProgress'")->fetch_assoc();
         $ogranich_na_InProgress = $ogranich_na_InProgress['COUNT(*)'];
         
         if($proverka_na_dosky > 0){
-            if($ogranich_na_InProgress < 3){
+            if($id_cell == $id_InProgress){
+                if($ogranich_na_InProgress < 3){
+                    mysqli_query($mysqli,"UPDATE `tikets` SET `id_cell` = '$id_cell' WHERE `tikets`.`id` = '$id_tiket'");
+                    return $deskid;
+                }else{
+                    $err = "<script>alert('В таблице InProgress уже максимальное количество тикетов')</script>";
+                    $deskid['err'] = $err;
+                    return $deskid;
+                }
+            }else{
                 mysqli_query($mysqli,"UPDATE `tikets` SET `id_cell` = '$id_cell' WHERE `tikets`.`id` = '$id_tiket'");
                 return $deskid;
-            }else{
-                echo "<script>alert('В таблице InProgress уже максимальное количество тикетов')</script>";
             }
         }else{
             return $deskid;
@@ -531,34 +542,44 @@ class Model_User extends Model
         }
         $mysqli->set_charset('utf8');
 
+        // echo "$err";
+
         $id_tiket = $_POST['id_tiket'];
         
         $id_cell = mysqli_query($mysqli,"SELECT * FROM `tikets` WHERE `id` = '$id_tiket'")->fetch_assoc();
         $id_cell = $id_cell['id_cell']; 
         $deskid = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
-        $deskid = $deskid['id_board'];
+        $deskid['id'] = $deskid['id_board'];
+        $id_board = $deskid['id'];
+
         
         $id_cell = $id_cell + 1;
         $proverka_na_dosky = mysqli_query($mysqli,"SELECT COUNT(*) FROM `cell` WHERE `id` = '$id_cell'")->fetch_assoc();
         $proverka_na_dosky = $proverka_na_dosky['COUNT(*)'];
 
-        $id_InProgress = mysqli_query($mysqli,"SELECT * FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$deskid'")->fetch_assoc();
+        $id_InProgress = mysqli_query($mysqli,"SELECT `id` FROM `cell` WHERE `title` = 'InProgress' AND `id_board` = '$id_board'")->fetch_assoc();
         $id_InProgress = $id_InProgress['id'];
-        $ogranich_na_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_cell'")->fetch_assoc();
+        $ogranich_na_InProgress = mysqli_query($mysqli,"SELECT COUNT(*) FROM `tikets` WHERE `id_cell` = '$id_InProgress'")->fetch_assoc();
         $ogranich_na_InProgress = $ogranich_na_InProgress['COUNT(*)'];
         
         if($proverka_na_dosky > 0){
-            if($ogranich_na_InProgress < 3){
+            if($id_cell == $id_InProgress){
+                if($ogranich_na_InProgress < 3){
+                    mysqli_query($mysqli,"UPDATE `tikets` SET `id_cell` = '$id_cell' WHERE `tikets`.`id` = '$id_tiket'");
+                    return $deskid;
+                }else{
+                    $err = "<script>alert('В таблице InProgress уже максимальное количество тикетов')</script>";
+                    $deskid['err'] = $err;
+                    return $deskid;
+                }
+            }else{
                 mysqli_query($mysqli,"UPDATE `tikets` SET `id_cell` = '$id_cell' WHERE `tikets`.`id` = '$id_tiket'");
                 return $deskid;
-            }else{
-                echo "<script>alert('В таблице InProgress уже максимальное количество тикетов')</script>";
             }
         }else{
-            echo "<script>alert('справа нет досок')</script>";
             return $deskid;
+            echo "<script>alert('слева нет досок')</script>";
         }
-
     }
 
     function Rename_tiket_kanban(){
