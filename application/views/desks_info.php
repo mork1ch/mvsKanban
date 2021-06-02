@@ -43,14 +43,15 @@
         margin-top: 5px;
         width: 15px;
         height: 15px;
-        background-image: url(../images/krest.png);
+        background-image: url(../../images/krest.png);
         background-size: 100%;    
         background-position: center;
         background-repeat: no-repeat;
         display: inline-block;
+        border: none;
     }
     .content .tikets .left{
-        background-image: url(../images/left.png);
+        background-image: url(../../images/left.png);
         background-position: center;
         width: 10px;
         height: 10px;
@@ -63,7 +64,7 @@
         display: inline;
     }
     .content .tikets .right{
-        background-image: url(../images/right.png);
+        background-image: url(../../images/right.png);
         background-position: center;
         width: 10px;
         height: 10px;

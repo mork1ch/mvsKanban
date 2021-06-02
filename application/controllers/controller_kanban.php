@@ -71,5 +71,9 @@ class Controller_Kanban extends Controller
             $this->view->generate('Create_new_tiket.php', 'template_view.php');
         }
     }
+    function action_delete_this_tiket(){
+        $deskid = $this->model->delete_this_tiket();
+        header("Location: /kanban/desks_info/?id=$deskid");
+    }
 }
 ?>
