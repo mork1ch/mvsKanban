@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 31 2021 г., 01:38
+-- Время создания: Июн 05 2021 г., 09:03
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -34,22 +34,6 @@ CREATE TABLE `boards` (
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `boards`
---
-
-INSERT INTO `boards` (`id`, `id_user`, `title`, `date`) VALUES
-(145, 5, 'Новая_доска_1', '2021-05-30'),
-(146, 5, 'Новая_доска_2', '2021-05-30'),
-(147, 5, 'Новая_доска_3', '2021-05-30'),
-(148, 5, 'Новая_доска_4', '2021-05-30'),
-(151, 7, 'Новая_доска_5', '2021-05-31'),
-(152, 7, 'Новая_доска_6', '2021-05-31'),
-(153, 7, 'Новая_доска_7', '2021-05-31'),
-(154, 7, 'Новая_доска_8', '2021-05-31'),
-(155, 7, 'Новая_доска_9', '2021-05-31'),
-(156, 7, 'Новая_доска_10', '2021-05-31');
-
 -- --------------------------------------------------------
 
 --
@@ -60,7 +44,7 @@ CREATE TABLE `cell` (
   `id` int(11) NOT NULL,
   `id_board` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` int(11) NOT NULL
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -75,20 +59,6 @@ CREATE TABLE `comments` (
   `id_ticket` int(11) NOT NULL,
   `date` int(11) NOT NULL,
   `text` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `desks`
---
-
-CREATE TABLE `desks` (
-  `id` int(32) NOT NULL,
-  `id_board` int(32) NOT NULL,
-  `todo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `inprogress` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `done` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -139,14 +109,12 @@ INSERT INTO `role` (`id`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `tickets`
+-- Структура таблицы `tikets`
 --
 
-CREATE TABLE `tickets` (
-  `id` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_board` int(11) NOT NULL,
-  `date` int(11) NOT NULL,
+CREATE TABLE `tikets` (
+  `id` int(32) NOT NULL,
+  `id_cell` int(32) NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -176,7 +144,8 @@ INSERT INTO `users` (`id`, `login`, `password`, `name`, `mail`, `telephone`, `id
 (3, 'radmir', 'Aqlp0kkl', 'pawsa', 'qweqweqwe@gmail.com', '+44545454545', 2),
 (5, '11111', 'b0baee9d279d34fa1dfd71aadb908c3f', '11111', '11111@qqq.qq', '11111', 2),
 (6, '12345', '827ccb0eea8a706c4c34a16891f84e7b', '12345', '12345@qq.qq', '12345', 2),
-(7, 'root', '63a9f0ea7bb98050796b649e85481845', 'root', 'Mork1cher@gmail.com', '', 1);
+(7, 'root', '63a9f0ea7bb98050796b649e85481845', 'root', 'Mork1cher@gmail.com', '', 1),
+(8, 'popitochnaya', 'e3f1d98dd49f9fd81c5f44acee2642c9', 'popitochnaya', 'popitochnaya@mail.ru', '66666666', 2);
 
 --
 -- Индексы сохранённых таблиц
@@ -205,13 +174,6 @@ ALTER TABLE `comments`
   ADD KEY `id_user` (`id_user`);
 
 --
--- Индексы таблицы `desks`
---
-ALTER TABLE `desks`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_board` (`id_board`);
-
---
 -- Индексы таблицы `files`
 --
 ALTER TABLE `files`
@@ -233,12 +195,10 @@ ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `tickets`
+-- Индексы таблицы `tikets`
 --
-ALTER TABLE `tickets`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_board` (`id_board`),
-  ADD KEY `id_user` (`id_user`);
+ALTER TABLE `tikets`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `users`
@@ -255,25 +215,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `boards`
 --
 ALTER TABLE `boards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=226;
 
 --
 -- AUTO_INCREMENT для таблицы `cell`
 --
 ALTER TABLE `cell`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT для таблицы `desks`
---
-ALTER TABLE `desks`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `files`
@@ -294,16 +248,16 @@ ALTER TABLE `role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT для таблицы `tickets`
+-- AUTO_INCREMENT для таблицы `tikets`
 --
-ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `tikets`
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -329,12 +283,6 @@ ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `desks`
---
-ALTER TABLE `desks`
-  ADD CONSTRAINT `desks_ibfk_1` FOREIGN KEY (`id_board`) REFERENCES `boards` (`id`);
-
---
 -- Ограничения внешнего ключа таблицы `files`
 --
 ALTER TABLE `files`
@@ -346,13 +294,6 @@ ALTER TABLE `files`
 ALTER TABLE `logs`
   ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`id_ticket`) REFERENCES `tickets` (`id`),
   ADD CONSTRAINT `logs_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
-
---
--- Ограничения внешнего ключа таблицы `tickets`
---
-ALTER TABLE `tickets`
-  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`id_board`) REFERENCES `boards` (`id`),
-  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `users`

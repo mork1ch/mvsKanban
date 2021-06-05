@@ -530,8 +530,9 @@ class Model_User extends Model
                 return $deskid;
             }
         }else{
+            $err = "<script>alert('слева нет досок')</script>";
+            $deskid['err'] = $err;
             return $deskid;
-            echo "<script>alert('слева нет досок')</script>";
         }
     }
     
@@ -577,8 +578,9 @@ class Model_User extends Model
                 return $deskid;
             }
         }else{
+            $err = "<script>alert('слева нет досок')</script>";
+            $deskid['err'] = $err;
             return $deskid;
-            echo "<script>alert('слева нет досок')</script>";
         }
     }
 
@@ -603,7 +605,9 @@ class Model_User extends Model
 
             return $deskid;
         }else{
-            echo "<script>alert('ошибка- не указанно название')</script>";
+            $err = "<script>alert('ошибка- не указанно название')</script>";
+            $deskid['err'] = $err;
+            return $deskid;
         }
     }
 
@@ -627,7 +631,9 @@ class Model_User extends Model
             mysqli_query($mysqli,"UPDATE `boards` SET `title` = '$tiket_title' WHERE `boards`.`id` = '$id'");
 
         }else{
-            echo "<script>alert('ошибка- не указанно название')</script>";
+            $err = "<script>alert('ошибка- не указанно название')</script>";
+            $deskid['err'] = $err;
+            return $deskid;
         }
     }
 
